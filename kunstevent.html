@@ -1,8 +1,12 @@
 <!doctype html>
 <html>
     <head>
-        <title>WXRcreator f&uuml;r kunstevent.net</title>
-        <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+        <title>WXRcreator für kunstevent.net</title>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/Artist.js"></script>
+        <script type="text/javascript" src="js/Event.js"></script>
+        <script type="text/javascript" src="js/Venue.js"></script>
 
 <!-- CONTAINER START -->
         <script id="xmlStartTemplate" type="text/template">
@@ -41,21 +45,88 @@
             var xmlEndTemplate = $('#xmlEndTemplate').html();
             var pageTemplate = $('#pageTemplate').html();
 
-            console.log(pageTemplate);
-
             var table = $('<table/>').attr({
                 'id' : 'table',
                 'width' : 'auto',
-                'border': '1'
+                'border': '1',
+                'align' : 'center'
             }).appendTo($('#main'));
 
-            var tr = $('<tr/>').appendTo(table);
-            var td = $('<td/>').appendTo(tr);
+            var tr, td, appendRow;
 
-            td.append("K&uuml;nstler, Event, Ausstellungsort");
+            tr = appendRow = $('<tr/>').appendTo(table);
+            td = $('<td/>').attr({
+                'align' : 'center',
+                'colspan' : '3'
+            }).appendTo(tr);
+            td.append("Wilkommen :)")
 
-            //TODO
+            tr = $('<tr/>').appendTo(table);
 
+            // NEW ARTIST
+            td = $('<td/>').appendTo(tr);
+            var newArtistBtn = $('<input/>').attr({
+                'type' : 'button',
+                'value' : 'neuer Künstler'
+            }).appendTo(td);
+            $(newArtistBtn).click(function() {
+                newArtist();
+            });
+
+            // NEW EVENT
+            td = $('<td/>').appendTo(tr);
+            var newEventBtn = $('<input/>').attr({
+                'type' : 'button',
+                'value' : 'neues Event'
+            }).appendTo(td);
+            $(newEventBtn).click(function() {
+                newEvent();
+            });
+
+            // NEW VENUE
+            td = $('<td/>').appendTo(tr);
+            var newVenueBtn = $('<input/>').attr({
+                'type' : 'button',
+                'value' : 'neuer Ausstellungsort'
+            }).appendTo(td);
+            $(newVenueBtn).click(function() {
+                newVenue();
+            });
+
+            tr = $('<tr/>').appendTo(table);
+            td = $('<td/>').attr({
+                'align' : 'center',
+                'colspan' : '3'
+            }).appendTo(tr);
+            var downloadBtn = $('<input/>').attr({
+                'type' : 'button',
+                'value' : 'Download',
+                'disabled' : 'true'
+            }).appendTo(td);
+            $(downloadBtn).click(function() {
+                download();
+            });
+
+
+            var templates = [];
+
+
+            function newArtist(){
+                $(downloadBtn).prop('disabled', false);
+                templates.push(new Artist(appendRow));
+            };
+            function newEvent(){
+                $(downloadBtn).prop('disabled', false);
+                templates.push(new Event(appendRow));
+            };
+            function newVenue(){
+                $(downloadBtn).prop('disabled', false);
+                templates.push(new Venue(appendRow));
+            };
+
+            function download(){
+                console.log("download");
+            }
 
         </script>
     </body>
