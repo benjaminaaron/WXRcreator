@@ -40,6 +40,29 @@ var Artist = function(appendRowParam){
 Artist.prototype = {
 
     getWXRcontrib: function(){
+        var wxrContrib = "";
+        var name = $(this.inputName).val();
 
+        var personPageID = currentMaxID ++;
+        var pageID;
+        wxrContrib += instantiatePageTemplate(name, "", personPageID, formatNameForURL(name), 0);
+
+        if(this.werkeCheckbox.prop('checked')){
+            pageID = currentMaxID ++;
+            wxrContrib += instantiatePageTemplate(name + " - Werke", "werke content", pageID, "werke", personPageID);
+        }
+
+        if(this.informationenCheckbox.prop('checked')){
+            pageID = currentMaxID ++;
+            wxrContrib += instantiatePageTemplate(name + " - Informationen", "informationen content", pageID, "informationen", personPageID);
+        }
+
+        if(this.biografieCheckbox.prop('checked')){
+            pageID = currentMaxID ++;
+            wxrContrib += instantiatePageTemplate(name + " - Biografie", "biografie content", pageID, "biografie", personPageID);
+        }
+
+        return wxrContrib;
     }
+    
 };

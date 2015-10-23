@@ -4,24 +4,21 @@
         <title>WXRcreator für kunstevent.net</title>
         <meta charset="UTF-8">
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/Artist.js"></script>
         <script type="text/javascript" src="js/Event.js"></script>
         <script type="text/javascript" src="js/Venue.js"></script>
 
 <!-- CONTAINER START -->
-        <script id="xmlStartTemplate" type="text/template">
-<?xml version="1.0" encoding="UTF-8"?>
+<script id="xmlStartTemplate" type="text/template"><?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
 <channel>
-<wp:wxr_version>1.2</wp:wxr_version>
-        </script>
+<wp:wxr_version>1.2</wp:wxr_version></script>
 <!-- CONTAINER END -->
-        <script id="xmlEndTemplate" type="text/template">
-</channel>
-</rss>
-        </script>
+<script id="xmlEndTemplate" type="text/template"></channel>
+</rss></script>
 <!-- PAGE -->
-        <script id="pageTemplate" type="text/template">
+<script id="pageTemplate" type="text/template">
 <item>
   <title>$TITLE$</title>
   <content:encoded><![CDATA[$CONTENT$]]></content:encoded>
@@ -29,8 +26,8 @@
   <wp:post_name>$POSTNAME$</wp:post_name>
   <wp:post_parent>$POSTPARENT$</wp:post_parent>
   <wp:post_type>page</wp:post_type>
-</item>
-        </script>
+</item></script>
+
         <style></style>
     </head>
     <body>
@@ -104,29 +101,47 @@
                 'disabled' : 'true'
             }).appendTo(td);
             $(downloadBtn).click(function() {
-                download();
+                downloadXML();
             });
 
 
+            var currentMaxID = 1;
             var templates = [];
 
 
-            function newArtist(){
-                $(downloadBtn).prop('disabled', false);
-                templates.push(new Artist(appendRow));
-            };
-            function newEvent(){
-                $(downloadBtn).prop('disabled', false);
-                templates.push(new Event(appendRow));
-            };
-            function newVenue(){
-                $(downloadBtn).prop('disabled', false);
-                templates.push(new Venue(appendRow));
+            function addTemplate(template){
+                if(templates.length == 0)
+                    $(downloadBtn).prop('disabled', false);
+                templates.push(template);
             };
 
-            function download(){
-                console.log("download");
+            function newArtist(){
+                addTemplate(new Artist(appendRow));
+            };
+            function newEvent(){
+                addTemplate(new Event(appendRow));
+            };
+            function newVenue(){
+                addTemplate(new Venue(appendRow));
+            };
+
+            function downloadXML(){
+                var xmlFile = xmlStartTemplate;
+
+                for(var i = 0; i < templates.length; i ++){
+                    xmlFile += templates[i].getWXRcontrib();
+                }
+
+                xmlFile += xmlEndTemplate;
+
+                download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
+
             }
+
+
+
+
+
 
         </script>
     </body>
