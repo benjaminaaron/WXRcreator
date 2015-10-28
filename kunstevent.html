@@ -9,12 +9,15 @@
         <script type="text/javascript" src="js/Event.js"></script>
         <script type="text/javascript" src="js/Venue.js"></script>
 
-<!-- CONTAINER START -->
+<!-- XML START -->
+
+<!-- CONTAINER -->
+    <!-- start -->
 <script id="xmlStartTemplate" type="text/template"><?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
 <channel>
 <wp:wxr_version>1.2</wp:wxr_version></script>
-<!-- CONTAINER END -->
+    <!-- end -->
 <script id="xmlEndTemplate" type="text/template"></channel>
 </rss></script>
 <!-- PAGE -->
@@ -27,8 +30,38 @@
   <wp:post_parent>$POSTPARENT$</wp:post_parent>
   <wp:post_type>page</wp:post_type>
 </item></script>
+<!-- XML END -->
 
-        <style></style>
+<!-- CONTENT START -->
+
+<!-- ARTIST PAGE CONTENT -->
+    <!-- beginning -->
+<script id="artistPageStart" type="text/template"><h1 class="pageTitle">$TITLE$</h1>
+<table class="navTable">
+<tbody>
+<tr></script>
+    <!-- end -->
+<script id="artistPageEnd" type="text/template"><td class="navTableBackColumn">&lt;- <a title="Künstler" href="http://kunsteventmuenchen.wordpress.com/kunstler/">Zurück zur Übersicht Künstler</a></td>
+</tr>
+</tbody>
+</table></script>
+    <!-- one header -->
+<script id="artistPageHeader" type="text/template"><td$FOCUSCOL$><a title="$MOUSEOVERLINKTITLE$" href="http://kunsteventmuenchen.wordpress.com/kunstler/$SUBPAGEURL$/">$SUBPAGE_TITLE$</a></td>
+</script>
+    <!-- focus column -->
+<script id="focusColumn" type="text/template"> class="focusColumn"</script>
+
+    <!-- embedd artist on kunstler-page -->
+<script id="artistPageEmbedding" type="text/template"><td>
+<div class="thumbnailContainer"><a title="$LANDINGPAGE_TITLE$" href="http://kunsteventmuenchen.wordpress.com/kunstler/$LANDINGPAGE_URL$"><img class="thumbnailPic" src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" alt="" width="100" height="100" /></a>
+<a href="http://kunsteventmuenchen.wordpress.com/kunstler/$LANDINGPAGE_URL$">$ARTIST_NAME$</a></div></td>
+</script>
+
+<!-- CONTENT END -->
+
+        <style>
+            //TODO
+        </style>
     </head>
     <body>
 
@@ -41,6 +74,11 @@
             var xmlStartTemplate = $('#xmlStartTemplate').html();
             var xmlEndTemplate = $('#xmlEndTemplate').html();
             var pageTemplate = $('#pageTemplate').html();
+            var artistPageStart = $('#artistPageStart').html();
+            var artistPageEnd = $('#artistPageEnd').html();
+            var artistPageHeader = $('#artistPageHeader').html();
+            var focusColumn = $('#focusColumn').html();
+            var artistPageEmbeddingOnKunstlerSite = $('#artistPageEmbeddingOnKunstlerSite').html();
 
             var table = $('<table/>').attr({
                 'id' : 'table',
@@ -108,7 +146,6 @@
             var currentMaxID = 1;
             var templates = [];
 
-
             function addTemplate(template){
                 if(templates.length == 0)
                     $(downloadBtn).prop('disabled', false);
@@ -133,13 +170,11 @@
                 }
 
                 xmlFile += xmlEndTemplate;
+                
+                //console.log(xmlFile);
 
-                download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
-
-            }
-
-
-
+                //download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
+            };
 
 
 

@@ -35,6 +35,8 @@ var Event = function(appendRowParam){
 Event.prototype = {
 
     getWXRcontrib: function(){
-
+        
+        //TODO
+        
     }
 };
