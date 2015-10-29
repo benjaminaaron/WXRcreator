@@ -4,36 +4,39 @@ var Artist = function(appendRowParam){
 
     tr = $('<tr/>');
 
-    $(tr).insertAfter(appendRowParam).closest("tr");
+    $(tr).insertAfter(appendRowParam).closest('tr');
     appendRow = tr;
 
     td = $('<td/>').attr({
         'align' : 'center',
-        'colspan' : '3'
+        'colspan' : '3',
+        'class' : 'artistCell'
     }).appendTo(tr);
 
-    td.append("Name: ");
+    td.append('Name: ');
     this.inputName = $('<input/>').attr({
         'type' : 'text',
         'value' : 'Max Mustermann'
     }).appendTo(td);
-    td.append("<br>");
+    td.append('<br>');
 
     this.werkeCheckbox = $('<input/>').attr({
         'type' : 'checkbox',
         'checked' : 'true',
     }).appendTo(td);
-    td.append("Werke ");
+    td.append('Werke ');
+    
     this.infoCheckbox = $('<input/>').attr({
         'type' : 'checkbox',
         'checked' : 'true',
     }).appendTo(td);
-    td.append("Informationen ");
+    td.append('Informationen ');
+    
     this.bioCheckbox = $('<input/>').attr({
         'type' : 'checkbox',
         'checked' : 'true',
     }).appendTo(td);
-    td.append("Biografie ");
+    td.append('Biografie ');
     
     this.td = td;        
 };
@@ -44,7 +47,7 @@ Artist.prototype = {
         this.artistFullName = $(this.inputName).val();
         this.personPageID = currentMaxID ++;
         this.nameForURL = formatNameForURL(this.artistFullName);
-        var wxrContrib = instantiatePageTemplate(this.artistFullName, "", this.personPageID, this.nameForURL, 0);
+        var wxrContrib = instantiatePageTemplate(this.artistFullName, '', this.personPageID, this.nameForURL, 0);
 
         this.prepareSubpages();
             
@@ -65,13 +68,13 @@ Artist.prototype = {
         this.subpages = [];
         
         if(this.werkeChecked)
-            this.subpages.push( new ArtistSubpage(this.artistFullName, "Werke", currentMaxID ++, "werke", this.personPageID));
+            this.subpages.push( new ArtistSubpage(this.artistFullName, 'Werke', currentMaxID ++, 'werke', this.personPageID));
         
         if(this.infoChecked)
-            this.subpages.push( new ArtistSubpage(this.artistFullName, "Informationen", currentMaxID ++, "informationen", this.personPageID));
+            this.subpages.push( new ArtistSubpage(this.artistFullName, 'Informationen', currentMaxID ++, 'informationen', this.personPageID));
         
         if(this.bioChecked)
-            this.subpages.push( new ArtistSubpage(this.artistFullName, "Biografie", currentMaxID ++, "biografie", this.personPageID));
+            this.subpages.push( new ArtistSubpage(this.artistFullName, 'Biografie', currentMaxID ++, 'biografie', this.personPageID));
         
         for(var i = 0; i < this.subpages.length; i ++)
             this.subpages[i].createContent(this.subpages);    
@@ -85,6 +88,8 @@ Artist.prototype = {
         
         //SELECT
         this.td.append($('<br/>'));
+        
+        this.td.append('Landingpage: ');
         var selector = $('<select/>').appendTo(this.td);
                     
         if(this.werkeChecked){
@@ -142,10 +147,10 @@ Artist.prototype = {
     
     updateEmbeddCode: function(landingpageTitle, landingpageURL, artistName){
         var embedd = artistPageEmbedding.innerHTML;
-        embedd = embedd.replace("$LANDINGPAGE_TITLE$", landingpageTitle);
-        embedd = embedd.replace("$LANDINGPAGE_URL$", landingpageURL);
-        embedd = embedd.replace("$LANDINGPAGE_URL$", landingpageURL); // appears twice and replace func stops after doing one
-        embedd = embedd.replace("$ARTIST_NAME$", artistName);
+        embedd = embedd.replace('$LANDINGPAGE_TITLE$', landingpageTitle);
+        embedd = embedd.replace('$LANDINGPAGE_URL$', landingpageURL);
+        embedd = embedd.replace('$LANDINGPAGE_URL$', landingpageURL); // appears twice and replace func stops after doing one
+        embedd = embedd.replace('$ARTIST_NAME$', artistName);
         return embedd;        
     }
 };
@@ -164,24 +169,24 @@ var ArtistSubpage = function(artistFullName, subpageHeaderTitle, pageID, URLpart
 ArtistSubpage.prototype = {
 
     createContent: function(subpages){    
-        this.content = artistPageStart.replace("$TITLE$", this.artistFullName + " - " + this.subpageHeaderTitle);
+        this.content = artistPageStart.replace('$TITLE$', this.artistFullName + ' - ' + this.subpageHeaderTitle);
         
         for(var i = 0; i < subpages.length; i ++){
             var subpage = subpages[i];
-            var focuscol = "";
+            var focuscol = '';
             if(subpage.pageID == this.pageID)            
                 focuscol = focusColumn;
-            var header = artistPageHeader.replace("$FOCUSCOL$", focuscol);
-            header = header.replace("$MOUSEOVERLINKTITLE$", subpage.artistFullName + " - " + subpage.subpageHeaderTitle);
-            header = header.replace("$SUBPAGEURL$", subpage.URLpart);
-            header = header.replace("$SUBPAGE_TITLE$", subpage.subpageHeaderTitle);    
+            var header = artistPageHeader.replace('$FOCUSCOL$', focuscol);
+            header = header.replace('$MOUSEOVERLINKTITLE$', subpage.artistFullName + ' - ' + subpage.subpageHeaderTitle);
+            header = header.replace('$SUBPAGEURL$', subpage.URLpart);
+            header = header.replace('$SUBPAGE_TITLE$', subpage.subpageHeaderTitle);    
             this.content += header;
         };
         this.content += artistPageEnd;           
     },
     
     getWXRcontrib: function(){
-        return instantiatePageTemplate(this.artistFullName + " - " + this.subpageHeaderTitle, this.content, this.pageID, this.URLpart, this.personPageID);    
+        return instantiatePageTemplate(this.artistFullName + ' - ' + this.subpageHeaderTitle, this.content, this.pageID, this.URLpart, this.personPageID);    
     }    
 };
 

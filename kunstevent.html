@@ -9,9 +9,8 @@
         <script type="text/javascript" src="js/Event.js"></script>
         <script type="text/javascript" src="js/Venue.js"></script>
 
-<!-- XML START -->
 
-<!-- CONTAINER -->
+<!-- XML CONTAINER -->
     <!-- start -->
 <script id="xmlStartTemplate" type="text/template"><?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
@@ -20,7 +19,7 @@
     <!-- end -->
 <script id="xmlEndTemplate" type="text/template"></channel>
 </rss></script>
-<!-- PAGE -->
+    <!-- page -->
 <script id="pageTemplate" type="text/template">
 <item>
   <title>$TITLE$</title>
@@ -30,26 +29,24 @@
   <wp:post_parent>$POSTPARENT$</wp:post_parent>
   <wp:post_type>page</wp:post_type>
 </item></script>
-<!-- XML END -->
 
-<!-- CONTENT START -->
 
-<!-- ARTIST PAGE CONTENT -->
-    <!-- beginning -->
-<script id="artistPageStart" type="text/template"><h1 class="pageTitle">$TITLE$</h1>
+<!-- PAGE CONTENT -->
+    <!-- beginning of nav table -->
+<script id="pageNavTableStart" type="text/template"><h1 class="pageTitle">$TITLE$</h1>
 <table class="navTable">
 <tbody>
 <tr></script>
-    <!-- end -->
-<script id="artistPageEnd" type="text/template"><td class="navTableBackColumn">&lt;- <a title="Künstler" href="http://kunsteventmuenchen.wordpress.com/kunstler/">Zurück zur Übersicht Künstler</a></td>
+    <!-- end of nav table -->
+<script id="pageNavTableEnd" type="text/template"><td class="navTableBackColumn">&lt;- <a title="$CATEGORY$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$">Zurück zur Übersicht $CATEGORY$</a></td>
 </tr>
 </tbody>
 </table></script>
     <!-- one header -->
-<script id="artistPageHeader" type="text/template"><td$FOCUSCOL$><a title="$MOUSEOVERLINKTITLE$" href="http://kunsteventmuenchen.wordpress.com/kunstler/$SUBPAGEURL$/">$SUBPAGE_TITLE$</a></td>
+<script id="pageNavTableOneHeader" type="text/template"><td$FOCUSCOL$><a title="$MOUSEOVERLINKTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$SUBPAGEURL$/">$SUBPAGE_TITLE$</a></td>
 </script>
     <!-- focus column -->
-<script id="focusColumn" type="text/template"> class="focusColumn"</script>
+<script id="pageNavTableFocusColumn" type="text/template"> class="focusColumn"</script>
 
     <!-- embedd artist on kunstler-page -->
 <script id="artistPageEmbedding" type="text/template"><td>
@@ -57,10 +54,36 @@
 <a href="http://kunsteventmuenchen.wordpress.com/kunstler/$LANDINGPAGE_URL$">$ARTIST_NAME$</a></div></td>
 </script>
 
+
 <!-- CONTENT END -->
 
         <style>
-            //TODO
+            
+            html * {
+                font-family: Georgia, serif;
+            }
+            
+            br {
+               display: block;
+               margin: 10px 0px;
+               content: '';
+            }
+
+            table {
+                border-collapse: separate;
+                border-spacing: 10px 30px;
+            }
+            
+            .artistCell {
+                border: 1.5px solid blue;
+                padding: 10px 10px 10px 10px;
+            }
+            
+            .eventCell {
+                border: 1.5px solid red;
+                padding: 10px 10px 10px 10px;
+            }
+            
         </style>
     </head>
     <body>
@@ -74,16 +97,16 @@
             var xmlStartTemplate = $('#xmlStartTemplate').html();
             var xmlEndTemplate = $('#xmlEndTemplate').html();
             var pageTemplate = $('#pageTemplate').html();
-            var artistPageStart = $('#artistPageStart').html();
-            var artistPageEnd = $('#artistPageEnd').html();
-            var artistPageHeader = $('#artistPageHeader').html();
-            var focusColumn = $('#focusColumn').html();
+            var pageNavTableStart = $('#pageNavTableStart').html();
+            var pageNavTableEnd = $('#pageNavTableEnd').html();
+            var pageNavTableOneHeader = $('#pageNavTableOneHeader').html();
+            var pageNavTableFocusColumn = $('#pageNavTableFocusColumn').html();
             var artistPageEmbeddingOnKunstlerSite = $('#artistPageEmbeddingOnKunstlerSite').html();
 
             var table = $('<table/>').attr({
                 'id' : 'table',
                 'width' : 'auto',
-                'border': '1',
+                'border': '0',
                 'align' : 'center'
             }).appendTo($('#main'));
 
@@ -94,9 +117,9 @@
                 'align' : 'center',
                 'colspan' : '3'
             }).appendTo(tr);
-            td.append("Wilkommen :)")
+            td.append("Wilkommen zum WXR Creator für kunstevent.net :)")
 
-            tr = $('<tr/>').appendTo(table);
+            tr = buttonRow = $('<tr/>').appendTo(table);
 
             // NEW ARTIST
             td = $('<td/>').appendTo(tr);
@@ -129,7 +152,7 @@
             });
 
             tr = $('<tr/>').appendTo(table);
-            td = $('<td/>').attr({
+            td = downloadBtnRowTd = $('<td/>').attr({
                 'align' : 'center',
                 'colspan' : '3'
             }).appendTo(tr);
@@ -165,18 +188,20 @@
             function downloadXML(){
                 var xmlFile = xmlStartTemplate;
 
-                for(var i = 0; i < templates.length; i ++){
+                for(var i = 0; i < templates.length; i ++)
                     xmlFile += templates[i].getWXRcontrib();
-                }
 
                 xmlFile += xmlEndTemplate;
                 
                 //console.log(xmlFile);
-
                 //download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
+                
+                $(downloadBtn).attr('disabled', true);                
+                $(buttonRow).remove();
+                
+                downloadBtnRowTd.append($('<br/>'));
+                downloadBtnRowTd.append('Diese Datei <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/admin.php?import=wordpress">hier</a> hochladen. Nach dem Import sind die neuen Seiten <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/edit.php?post_status=draft&post_type=page">hier</a> zu finden.');    
             };
-
-
 
         </script>
     </body>
