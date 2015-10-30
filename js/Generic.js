@@ -1,5 +1,24 @@
 
-var Artist = function(appendRowParam){
+var Subpage = function(title, defaultOn){
+    this.title = title;
+    this.defaultOn = this.defaultOn;
+    
+    this.getCheckboxDOM = function(){    
+        var div = $('<div/>');
+        div.append(this.title);
+        $('<input/>').attr({
+            'type' : 'checkbox',
+            'checked' : this.defaultOn
+        }).appendTo(div);    
+        return div;        
+    };
+};
+
+
+//var subpages = [new Subpage('Werke', true), new Subpage('Informationen', true), new Subpage('Biografie', true)];
+//...
+
+var Generic = function(appendRowParam, subpages){
     var tr, td;
 
     tr = $('<tr/>');
@@ -41,7 +60,7 @@ var Artist = function(appendRowParam){
     this.td = td;        
 };
 
-Artist.prototype = {
+Generic.prototype = {
 
     getWXRcontrib: function(){
         this.artistFullName = $(this.inputName).val();
@@ -156,9 +175,9 @@ Artist.prototype = {
 };
 
 
-// ARTIST SUBPAGE
+// SUBPAGE
 
-var ArtistSubpage = function(artistFullName, artistNameForURL, subpageHeaderTitle, pageID, categoryURL, personPageID){
+var GenericSubpage = function(artistFullName, artistNameForURL, subpageHeaderTitle, pageID, categoryURL, personPageID){
     this.artistFullName = artistFullName;
     this.artistNameForURL = artistNameForURL;
     this.subpageHeaderTitle = subpageHeaderTitle;
@@ -167,7 +186,7 @@ var ArtistSubpage = function(artistFullName, artistNameForURL, subpageHeaderTitl
     this.personPageID = personPageID;
 };
 
-ArtistSubpage.prototype = {
+GenericSubpage.prototype = {
 
     createContent: function(subpages){    
         this.content = pageNavTableStart.replace('$TITLE$', this.artistFullName + ' - ' + this.subpageHeaderTitle);

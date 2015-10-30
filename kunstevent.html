@@ -6,9 +6,12 @@
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/Artist.js"></script>
+
+        <!--
+        <script type="text/javascript" src="js/Generic.js"></script>                
         <script type="text/javascript" src="js/Event.js"></script>
         <script type="text/javascript" src="js/Venue.js"></script>
-
+        -->
 
 <!-- XML CONTAINER -->
     <!-- start -->
@@ -43,7 +46,7 @@
 </tbody>
 </table></script>
     <!-- one header -->
-<script id="pageNavTableOneHeader" type="text/template"><td$FOCUSCOL$><a title="$MOUSEOVERLINKTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$SUBPAGEURL$/">$SUBPAGE_TITLE$</a></td>
+<script id="pageNavTableOneHeader" type="text/template"><td$FOCUSCOL$><a title="$SUBPAGE_TITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$SUBPAGE_URL$/">$SUBPAGE_TITLE$</a></td>
 </script>
     <!-- focus column -->
 <script id="pageNavTableFocusColumn" type="text/template"> class="focusColumn"</script>
@@ -135,7 +138,8 @@
             td = $('<td/>').appendTo(tr);
             var newEventBtn = $('<input/>').attr({
                 'type' : 'button',
-                'value' : 'neues Event'
+                'value' : 'neues Event',
+                'disabled' : true
             }).appendTo(td);
             $(newEventBtn).click(function() {
                 newEvent();
@@ -145,7 +149,8 @@
             td = $('<td/>').appendTo(tr);
             var newVenueBtn = $('<input/>').attr({
                 'type' : 'button',
-                'value' : 'neuer Ausstellungsort'
+                'value' : 'neuer Ausstellungsort',
+                'disabled' : true
             }).appendTo(td);
             $(newVenueBtn).click(function() {
                 newVenue();
@@ -159,7 +164,7 @@
             var downloadBtn = $('<input/>').attr({
                 'type' : 'button',
                 'value' : 'Download',
-                'disabled' : 'true'
+                'disabled' : true
             }).appendTo(td);
             $(downloadBtn).click(function() {
                 downloadXML();
@@ -194,7 +199,7 @@
                 xmlFile += xmlEndTemplate;
                 
                 //console.log(xmlFile);
-                //download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
+                download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
                 
                 $(downloadBtn).attr('disabled', true);                
                 $(buttonRow).remove();
