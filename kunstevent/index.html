@@ -5,38 +5,34 @@
         <meta charset="UTF-8">
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/Template.js"></script> 
         <script type="text/javascript" src="js/Artist.js"></script>
-
-        <!--
-        <script type="text/javascript" src="js/Generic.js"></script>                
         <script type="text/javascript" src="js/Event.js"></script>
         <script type="text/javascript" src="js/Venue.js"></script>
-        -->
 
 <!-- XML CONTAINER -->
     <!-- start -->
-<script id="xmlStartTemplate" type="text/template"><?xml version="1.0" encoding="UTF-8"?>
+<script id="wxrStart" type="text/template"><?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
 <channel>
 <wp:wxr_version>1.2</wp:wxr_version></script>
     <!-- end -->
-<script id="xmlEndTemplate" type="text/template"></channel>
+<script id="wxrEnd" type="text/template"></channel>
 </rss></script>
     <!-- page -->
-<script id="pageTemplate" type="text/template">
+<script id="wxrPageTemplate" type="text/template">
 <item>
   <title>$TITLE$</title>
   <content:encoded><![CDATA[$CONTENT$]]></content:encoded>
-  <wp:post_id>$POSTID$</wp:post_id>
-  <wp:post_name>$POSTNAME$</wp:post_name>
-  <wp:post_parent>$POSTPARENT$</wp:post_parent>
+  <wp:post_id>$ID$</wp:post_id>
+  <wp:post_name>$NAME$</wp:post_name>
+  <wp:post_parent>$PARENT$</wp:post_parent>
   <wp:post_type>page</wp:post_type>
 </item></script>
 
-
 <!-- PAGE CONTENT -->
     <!-- beginning of nav table -->
-<script id="pageNavTableStart" type="text/template"><h1 class="pageTitle">$TITLE$</h1>
+<script id="pageNavTableStart" type="text/template"><h1 class="pageTitle">$PAGETITLE$</h1>
 <table class="navTable">
 <tbody>
 <tr></script>
@@ -51,161 +47,123 @@
     <!-- focus column -->
 <script id="pageNavTableFocusColumn" type="text/template"> class="focusColumn"</script>
 
-    <!-- embedd artist on kunstler-page -->
-<script id="artistPageEmbedding" type="text/template"><td>
-<div class="thumbnailContainer"><a title="$LANDINGPAGE_TITLE$" href="http://kunsteventmuenchen.wordpress.com/kunstler/$LANDINGPAGE_URL$"><img class="thumbnailPic" src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" alt="" width="100" height="100" /></a>
-<a href="http://kunsteventmuenchen.wordpress.com/kunstler/$LANDINGPAGE_URL$">$ARTIST_NAME$</a></div></td>
+    <!-- embedding -->
+<script id="embeddingSnippet" type="text/template"><td>
+<div class="thumbnailContainer"><a title="$LANDINGPAGE_LONGTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$"><img class="thumbnailPic" src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" alt="" width="100" height="100" /></a>
+<a href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$">$LANDINGPAGE_TITLE$</a></div></td>
 </script>
-
 
 <!-- CONTENT END -->
 
-        <style>
-            
+        <style>    
             html * {
                 font-family: Georgia, serif;
             }
-            
             br {
                display: block;
                margin: 10px 0px;
                content: '';
             }
-
             table {
                 border-collapse: separate;
                 border-spacing: 10px 30px;
             }
-            
-            .artistCell {
+            td {
+                padding: 10px 10px 10px 10px;
+            }
+            .tdArtist{
                 border: 1.5px solid blue;
-                padding: 10px 10px 10px 10px;
             }
-            
-            .eventCell {
+            .tdEvent{
                 border: 1.5px solid red;
-                padding: 10px 10px 10px 10px;
             }
-            
+            .tdVenue{
+                border: 1.5px solid green;
+            }
         </style>
     </head>
     <body>
 
-        <div id="main"></div>
-
+        <table border='0' align='center'>
+            <tbody>
+                <tr id='appendRow'>
+                    <td>
+                        Wilkommen zum WXR Creator für kunstevent.net
+                    <td>
+                </tr>
+                <tr id='buttonRow'>
+                    <td>
+                        <div align='center'>
+                            <input type='button' value='neuer Künstler' id='newArtistBtn'>
+                            <input type='button' value='neues Event' id='newEventBtn'>
+                            <input type='button' value='neuer Ausstellungsort' id='newVenueBtn'>
+                        </div>
+                    <td>
+                </tr>
+                <tr>
+                    <td id='downloadBtnTd'>
+                        <div align='center'>
+                            <input type='button' value='Download' disabled=true id='downloadBtn'>
+                        </div>
+                    <td>
+                </tr>
+            </tbody>
+        </table>
+        
         <script>
-
-            //Umlaute: https://dhue.de/html-schreibweise-fuer-aeueoess/
-
-            var xmlStartTemplate = $('#xmlStartTemplate').html();
-            var xmlEndTemplate = $('#xmlEndTemplate').html();
-            var pageTemplate = $('#pageTemplate').html();
+        
+            var wxrStart = $('#wxrStart').html();
+            var wxrEnd = $('#wxrEnd').html();
+            var wxrPageTemplate = $('#wxrPageTemplate').html();
             var pageNavTableStart = $('#pageNavTableStart').html();
             var pageNavTableEnd = $('#pageNavTableEnd').html();
             var pageNavTableOneHeader = $('#pageNavTableOneHeader').html();
             var pageNavTableFocusColumn = $('#pageNavTableFocusColumn').html();
-            var artistPageEmbeddingOnKunstlerSite = $('#artistPageEmbeddingOnKunstlerSite').html();
+            var embeddingSnippet = $('#embeddingSnippet').html();
+            
+            var appendRow = $('#appendRow');
 
-            var table = $('<table/>').attr({
-                'id' : 'table',
-                'width' : 'auto',
-                'border': '0',
-                'align' : 'center'
-            }).appendTo($('#main'));
-
-            var tr, td, appendRow;
-
-            tr = appendRow = $('<tr/>').appendTo(table);
-            td = $('<td/>').attr({
-                'align' : 'center',
-                'colspan' : '3'
-            }).appendTo(tr);
-            td.append("Wilkommen zum WXR Creator für kunstevent.net :)")
-
-            tr = buttonRow = $('<tr/>').appendTo(table);
-
-            // NEW ARTIST
-            td = $('<td/>').appendTo(tr);
-            var newArtistBtn = $('<input/>').attr({
-                'type' : 'button',
-                'value' : 'neuer Künstler'
-            }).appendTo(td);
-            $(newArtistBtn).click(function() {
-                newArtist();
+            $('#newArtistBtn').click(function() {
+                addTemplate(new Artist());
             });
 
-            // NEW EVENT
-            td = $('<td/>').appendTo(tr);
-            var newEventBtn = $('<input/>').attr({
-                'type' : 'button',
-                'value' : 'neues Event',
-                'disabled' : true
-            }).appendTo(td);
-            $(newEventBtn).click(function() {
-                newEvent();
+            $('#newEventBtn').click(function() {
+                addTemplate(new Event());
             });
 
-            // NEW VENUE
-            td = $('<td/>').appendTo(tr);
-            var newVenueBtn = $('<input/>').attr({
-                'type' : 'button',
-                'value' : 'neuer Ausstellungsort',
-                'disabled' : true
-            }).appendTo(td);
-            $(newVenueBtn).click(function() {
-                newVenue();
+            $('#newVenueBtn').click(function() {
+                addTemplate(new Venue());
             });
 
-            tr = $('<tr/>').appendTo(table);
-            td = downloadBtnRowTd = $('<td/>').attr({
-                'align' : 'center',
-                'colspan' : '3'
-            }).appendTo(tr);
-            var downloadBtn = $('<input/>').attr({
-                'type' : 'button',
-                'value' : 'Download',
-                'disabled' : true
-            }).appendTo(td);
-            $(downloadBtn).click(function() {
+            $('#downloadBtn').click(function() {
                 downloadXML();
             });
-
 
             var currentMaxID = 1;
             var templates = [];
 
             function addTemplate(template){
                 if(templates.length == 0)
-                    $(downloadBtn).prop('disabled', false);
+                    $('#downloadBtn').prop('disabled', false);
                 templates.push(template);
             };
 
-            function newArtist(){
-                addTemplate(new Artist(appendRow));
-            };
-            function newEvent(){
-                addTemplate(new Event(appendRow));
-            };
-            function newVenue(){
-                addTemplate(new Venue(appendRow));
-            };
-
             function downloadXML(){
-                var xmlFile = xmlStartTemplate;
+                var wxrFile = wxrStart;
 
                 for(var i = 0; i < templates.length; i ++)
-                    xmlFile += templates[i].getWXRcontrib();
+                    wxrFile += templates[i].getWXRcontrib();
 
-                xmlFile += xmlEndTemplate;
+                wxrFile += wxrEnd;
                 
-                //console.log(xmlFile);
-                download(xmlFile, "WordpressImport_" + getTimestamp() + ".xml");
+                console.log(wxrFile);
+                //download(wxrFile, "WordpressImport_" + getTimestamp() + ".xml");
                 
-                $(downloadBtn).attr('disabled', true);                
-                $(buttonRow).remove();
+                $('#downloadBtn').attr('disabled', true);                
+                $('#buttonRow').remove();
                 
-                downloadBtnRowTd.append($('<br/>'));
-                downloadBtnRowTd.append('Diese Datei <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/admin.php?import=wordpress">hier</a> hochladen. Nach dem Import sind die neuen Seiten <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/edit.php?post_status=draft&post_type=page">hier</a> zu finden.');    
+                $('#downloadBtnTd').append($('<br/>'));
+                $('#downloadBtnTd').append('Diese Datei <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/admin.php?import=wordpress">hier</a> hochladen. Nach dem Import sind die neuen Seiten <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/edit.php?post_status=draft&post_type=page">hier</a> zu finden.');   
             };
 
         </script>

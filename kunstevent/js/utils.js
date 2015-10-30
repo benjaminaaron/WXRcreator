@@ -1,21 +1,13 @@
 
-function instantiatePageTemplate(title, content, pageID, urlName, parentID){
-    var p = pageTemplate;
-    p = p.replace("$TITLE$", title);
-    p = p.replace("$CONTENT$", content);
-    p = p.replace("$POSTID$", pageID);
-    p = p.replace("$POSTNAME$", urlName);
-    p = p.replace("$POSTPARENT$", parentID);
+function instantiatePageTemplate(title, content, pageID, urlPagename, parentID){
+    var p = wxrPageTemplate;
+    p = p.replace('$TITLE$', title);
+    p = p.replace('$CONTENT$', content);
+    p = p.replace('$ID$', pageID);
+    p = p.replace('$NAME$', urlPagename);
+    p = p.replace('$PARENT$', parentID);
     return p;
 }
-
-function formatNameForURL(name){
-    return replaceAll(" ", "-", name.replace(/[^a-zA-Z0-9 ]/g, '')).latinise().toLowerCase();
-};
-
-function replaceAll(find, replace, str){
-  return str.replace(new RegExp(find, 'g'), replace);
-};
 
 function download(content, filename){
     var element = document.createElement('a');
@@ -25,6 +17,14 @@ function download(content, filename){
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+};
+
+function formatForURL(name){
+    return replaceAll(" ", "-", name.replace(/[^a-zA-Z0-9 ]/g, '')).latinise().toLowerCase();
+};
+
+function replaceAll(find, replace, str){
+    return str.replace(new RegExp(find, 'g'), replace);
 };
 
 function getTimestamp(){
