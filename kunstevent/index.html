@@ -3,7 +3,14 @@
     <head>
         <title>WXRcreator für kunstevent.net</title>
         <meta charset="UTF-8">
-        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        
+        <link href="css/vendors/jquery.tagit.css" type="text/css" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="js/vendors/tag-it.min.js"></script>
+        
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/Template.js"></script> 
         <script type="text/javascript" src="js/Artist.js"></script>
@@ -31,6 +38,7 @@
 </item></script>
 
 <!-- PAGE CONTENT -->
+
     <!-- beginning of nav table -->
 <script id="pageNavTableStart" type="text/template"><h1 class="pageTitle">$PAGETITLE$</h1>
 <table class="navTable">
@@ -40,7 +48,8 @@
 <script id="pageNavTableEnd" type="text/template"><td class="navTableBackColumn">&lt;- <a title="$CATEGORY$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$">Zurück zur Übersicht $CATEGORY$</a></td>
 </tr>
 </tbody>
-</table></script>
+</table>
+</script>
     <!-- one header -->
 <script id="pageNavTableOneHeader" type="text/template"><td$FOCUSCOL$><a title="$SUBPAGE_TITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$SUBPAGE_URL$/">$SUBPAGE_TITLE$</a></td>
 </script>
@@ -52,6 +61,33 @@
 <div class="thumbnailContainer"><a title="$LANDINGPAGE_LONGTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$"><img class="thumbnailPic" src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" alt="" width="100" height="100" /></a>
 <a href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$">$LANDINGPAGE_TITLE$</a></div></td>
 </script>
+
+    <!-- event table start -->
+<script id="eventTableStart" type="text/template"><table class="eventTable">
+<tbody></script>
+    <!-- event table row -->
+<script id="eventTableRow" type="text/template">    
+<tr>
+<td class="eventTable1stCol">$LABEL$</td>
+<td class="eventTable2ndCol">ersetze mich</td>
+</tr></script>
+    <!-- event table end -->
+<script id="eventTableEnd" type="text/template">    
+</tbody>
+</table></script>
+    
+    <!-- venue address table -->
+<script id="venueAdressTable" type="text/template">&nbsp;
+<table style="width:auto;">
+<tbody>
+<tr>
+<td><img src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" width="140" height="140" /></td>
+<td style="vertical-align:middle;"><strong>Mein neuer Ausstellungsort</strong>
+Erfundene Straße 1
+80000 München</td>
+</tr>
+</tbody>
+</table></script>
 
 <!-- CONTENT END -->
 
@@ -80,6 +116,13 @@
             .tdVenue{
                 border: 1.5px solid green;
             }
+            /* Tag-it! */
+			.ui-widget {
+				font-size: 0.8em !important;
+			}
+            .ui-state-default {
+                font-weight: normal !important;
+            }
         </style>
     </head>
     <body>
@@ -87,7 +130,7 @@
         <table border='0' align='center'>
             <tbody>
                 <tr id='appendRow'>
-                    <td>
+                    <td align='center'>
                         Wilkommen zum WXR Creator für kunstevent.net
                     <td>
                 </tr>
@@ -120,7 +163,11 @@
             var pageNavTableOneHeader = $('#pageNavTableOneHeader').html();
             var pageNavTableFocusColumn = $('#pageNavTableFocusColumn').html();
             var embeddingSnippet = $('#embeddingSnippet').html();
-            
+            var eventTableStart = $('#eventTableStart').html();
+            var eventTableRow = $('#eventTableRow').html();
+            var eventTableEnd = $('#eventTableEnd').html();
+            var venueAdressTable = $('#venueAdressTable').html();
+
             var appendRow = $('#appendRow');
 
             $('#newArtistBtn').click(function() {
@@ -156,8 +203,8 @@
 
                 wxrFile += wxrEnd;
                 
-                console.log(wxrFile);
-                //download(wxrFile, "WordpressImport_" + getTimestamp() + ".xml");
+                //console.log(wxrFile);
+                download(wxrFile, "WordpressImport_" + getTimestamp() + ".xml");
                 
                 $('#downloadBtn').attr('disabled', true);                
                 $('#buttonRow').remove();

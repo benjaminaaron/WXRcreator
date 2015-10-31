@@ -21,24 +21,24 @@ var Template = function(tdClass){
     
     for(var i = 0; i < this.subpages.length; i ++)
         this.subpages[i].appendCheckboxDOM(this.td);
-        
-    this.parentPageID = currentMaxID ++;
 };
 
 Template.prototype = {
 
     getWXRcontrib: function(){
         
-        var parentPageTitle = $(this.inputField).val();
-        var parentPageTitleURL = formatForURL(parentPageTitle)
+        var parentPageID = currentMaxID ++;
         
-        var wxrContrib = instantiatePageTemplate(parentPageTitle, '', this.parentPageID, parentPageTitleURL, 0);
+        this.parentPageTitle = $(this.inputField).val();
+        this.parentPageTitleURL = formatForURL(this.parentPageTitle)
+        
+        var wxrContrib = instantiatePageTemplate(this.parentPageTitle, '', parentPageID, this.parentPageTitleURL, 0);
 
         for(var i = 0; i < this.subpages.length; i ++){
             var subpage = this.subpages[i];
             if(subpage.isActive()){
-                var content = subpage.buildContent(this.subpages, this.category, this.categoryURL, parentPageTitle, parentPageTitleURL);
-                wxrContrib += instantiatePageTemplate(parentPageTitle + ' - ' + subpage.title , content, currentMaxID ++, subpage.titleURL, this.parentPageID);
+                var content = subpage.buildContent(this);
+                wxrContrib += instantiatePageTemplate(this.parentPageTitle + ' - ' + subpage.title , content, currentMaxID ++, subpage.titleURL, parentPageID);
             };
         };
 
@@ -71,26 +71,26 @@ TemplateSubpage.prototype = {
         return this.checkbox.prop('checked');    
     },
     
-    buildContent: function(subpages, category, categoryURL, parentPageTitle, parentPageTitleURL){
-        
-        var content = pageNavTableStart.replace('$PAGETITLE$', parentPageTitle);
+    buildContent: function(parentPage){
+
+        var content = pageNavTableStart.replace('$PAGETITLE$', parentPage.parentPageTitle);
                 
-        for(var i = 0; i < subpages.length; i ++){
-            var subpage = subpages[i];
+        for(var i = 0; i < parentPage.subpages.length; i ++){
+            var subpage = parentPage.subpages[i];
             if(subpage.isActive()){         
                 var focuscol = subpage.title == this.title ? pageNavTableFocusColumn : '';
                 var header = pageNavTableOneHeader.replace('$FOCUSCOL$', focuscol)
-                    .replace('$SUBPAGE_TITLE$', parentPageTitle + ' - ' + subpage.title)
-                    .replace('$CATEGORY_URL$', categoryURL)
-                    .replace('$SUBPAGE_URL$', parentPageTitleURL + '/' + subpage.titleURL)
+                    .replace('$SUBPAGE_TITLE$', parentPage.parentPageTitle + ' - ' + subpage.title)
+                    .replace('$CATEGORY_URL$', parentPage.categoryURL)
+                    .replace('$SUBPAGE_URL$', parentPage.parentPageTitleURL + '/' + subpage.titleURL)
                     .replace('$SUBPAGE_TITLE$', subpage.title);  
                 content += header;
             };
         };
         
-        content += pageNavTableEnd.replace('$CATEGORY_URL$', categoryURL)
-            .replace('$CATEGORY$', category)
-            .replace('$CATEGORY$', category);
+        content += pageNavTableEnd.replace('$CATEGORY_URL$', parentPage.categoryURL)
+            .replace('$CATEGORY$', parentPage.category)
+            .replace('$CATEGORY$', parentPage.category);
 
         return content;
     }

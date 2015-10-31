@@ -26,10 +26,4 @@ var ArtistSubpage = function(title, defaultOn, changeAllowed){
 
 ArtistSubpage.prototype = {
     __proto__: TemplateSubpage.prototype,
-    
-    /*
-    buildContent: function(subpages, category, categoryURL, parentPageTitle, parentPageTitleURL){
-        return TemplateSubpage.prototype.buildContent.call(this, subpages, category, categoryURL, parentPageTitle, parentPageTitleURL);
-    }*/
-        
 };

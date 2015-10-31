@@ -7,7 +7,7 @@ function instantiatePageTemplate(title, content, pageID, urlPagename, parentID){
     p = p.replace('$NAME$', urlPagename);
     p = p.replace('$PARENT$', parentID);
     return p;
-}
+};
 
 function download(content, filename){
     var element = document.createElement('a');
