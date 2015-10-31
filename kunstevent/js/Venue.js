@@ -14,6 +14,7 @@ var Venue = function(){
     this.inputPretext = 'Name: ';
     this.inputPrefill = 'Mein neuer Ausstellungsort';   
     this.embeddingSnippet = embeddingSnippetVenue;
+    this.pageWhereToEmbedInEditMode = 'https://kunsteventmuenchen.wordpress.com/wp-admin/post.php?post=28&action=edit';
     this.textareaRows = 5;
     this.textareaCols = 60;
     

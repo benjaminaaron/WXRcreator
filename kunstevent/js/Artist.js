@@ -14,6 +14,7 @@ var Artist = function(){
     this.inputPretext = 'Name: ';
     this.inputPrefill = 'Max Mustermann';
     this.embeddingSnippet = embeddingSnippet;
+    this.pageWhereToEmbedInEditMode = 'https://kunsteventmuenchen.wordpress.com/wp-admin/post.php?post=158&action=edit';
     this.textareaRows = 10;
     this.textareaCols = 60;
 

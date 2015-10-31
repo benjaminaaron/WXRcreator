@@ -14,6 +14,7 @@ var Event = function(){
     this.inputPretext = 'Titel: ';
     this.inputPrefill = 'Mein neues Event'; 
     this.embeddingSnippet = embeddingSnippet;
+    this.pageWhereToEmbedInEditMode = 'https://kunsteventmuenchen.wordpress.com/wp-admin/post.php?post=213&action=edit';
     this.textareaRows = 11;
     this.textareaCols = 60;  
 

@@ -99,6 +99,12 @@ Template.prototype = {
             var embed = getEmbeddingSnippet(self.embeddingSnippet, landingpageLongTitle, self.parentPageTitle, landingpageURL, self.categoryURL);
             $(textarea).val(embed);
         });
+        
+        var div = $('<div/>').attr({
+            'align' : 'center',
+            'style' : 'font-size: 0.8em;'
+        }).appendTo(this.td);
+        $(div).append('<br/>Diesen Code <a href=\"' + this.pageWhereToEmbedInEditMode + '\">hier</a> einbauen.');   
     }
     
 };
