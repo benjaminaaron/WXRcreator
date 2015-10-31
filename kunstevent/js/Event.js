@@ -48,14 +48,17 @@ EventSubpage.prototype = {
     
     buildContent: function(parentPage){
         var content = TemplateSubpage.prototype.buildContent.call(this, parentPage);
-        var additionalLabels = $(parentPage.tags).tagit('assignedTags'); //for eventTable
-        
-        if(additionalLabels.length > 0){
-            content += eventTableStart;
-            for(var i = 0; i < additionalLabels.length; i ++)
-                content += eventTableRow.replace('$LABEL$', additionalLabels[i]);                
-            content += eventTableEnd;
-        };
+                
+        if(this.title == "Informationen"){
+            var additionalLabels = $(parentPage.tags).tagit('assignedTags'); //for eventTable
+            
+            if(additionalLabels.length > 0){
+                content += eventTableStart;
+                for(var i = 0; i < additionalLabels.length; i ++)
+                    content += eventTableRow.replace('$LABEL$', additionalLabels[i]);                
+                content += eventTableEnd;
+            };
+        }
 
         return content;
     }    
