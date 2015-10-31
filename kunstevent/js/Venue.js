@@ -28,6 +28,11 @@ VenueSubpage.prototype = {
     __proto__: TemplateSubpage.prototype,
     
     buildContent: function(parentPage){
-        return TemplateSubpage.prototype.buildContent.call(this, parentPage) + venueAdressTable;
+        
+        var content = TemplateSubpage.prototype.buildContent.call(this, parentPage);
+        if(this.title == "Informationen")
+            content += venueAdressTable;
+        return content;
+        
     } 
 };
