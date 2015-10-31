@@ -10,8 +10,12 @@ var Event = function(){
     this.categoryURL = 'events'; 
     this.tdClass = 'tdEvent';
     this.tdTitle = 'neues Event';
+    this.tdTitleClass = 'tdTitleEvent';
     this.inputPretext = 'Titel: ';
-    this.inputPrefill = 'Mein neues Event';   
+    this.inputPrefill = 'Mein neues Event'; 
+    this.embeddingSnippet = embeddingSnippet;
+    this.textareaRows = 11;
+    this.textareaCols = 60;  
 
     Template.call(this);
     
@@ -37,6 +41,7 @@ Event.prototype = {
             showAutocompleteOnFocus : true
         });
     }
+    
 };
 
 var EventSubpage = function(title, defaultOn, changeAllowed){
@@ -47,6 +52,10 @@ EventSubpage.prototype = {
     __proto__: TemplateSubpage.prototype,
     
     buildContent: function(parentPage){
+        $('.ui-autocomplete-input').prop('disabled', true).val(''); //disable tag-it
+        $('.ui-icon-close').remove();
+        $('.ui-widget-content').css('opacity','.65'); 
+        
         var content = TemplateSubpage.prototype.buildContent.call(this, parentPage);
                 
         if(this.title == "Informationen"){

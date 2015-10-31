@@ -56,11 +56,16 @@
     <!-- focus column -->
 <script id="pageNavTableFocusColumn" type="text/template"> class="focusColumn"</script>
 
-    <!-- embedding -->
+    <!-- embedding for artist and event -->
 <script id="embeddingSnippet" type="text/template"><td>
 <div class="thumbnailContainer"><a title="$LANDINGPAGE_LONGTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$"><img class="thumbnailPic" src="https://kunsteventmuenchen.files.wordpress.com/2015/10/artistpictureplaceholder_rect.jpg" alt="" width="100" height="100" /></a>
-<a href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$">$LANDINGPAGE_TITLE$</a></div></td>
+<a href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$">$LANDINGPAGE_TITLE$</a></div>
+</td>
 </script>
+    <!-- embedding for venue -->
+<script id="embeddingSnippetVenue" type="text/template"><p><a title="$LANDINGPAGE_LONGTITLE$" href="http://kunsteventmuenchen.wordpress.com/$CATEGORY_URL$/$LANDINGPAGE_URL$">$LANDINGPAGE_TITLE$</a></p>
+</script>
+
 
     <!-- event table start -->
 <script id="eventTableStart" type="text/template"><table class="eventTable">
@@ -107,14 +112,27 @@ Erfundene Straße 1
             td {
                 padding: 10px 10px 10px 10px;
             }
-            .tdArtist{
+            .tdArtist {
                 border: 1.5px solid blue;
             }
-            .tdEvent{
+            .tdTitleArtist {
+                color: blue;
+            }
+            .tdEvent {
                 border: 1.5px solid red;
             }
-            .tdVenue{
+            .tdTitleEvent {
+                color: red;
+            }
+            .tdVenue {
                 border: 1.5px solid green;
+            }
+            .tdTitleVenue {
+                color: green;
+            }
+            textarea {
+                color: gray;
+                border:1px solid silver;
             }
             /* Tag-it! */
 			.ui-widget {
@@ -163,6 +181,7 @@ Erfundene Straße 1
             var pageNavTableOneHeader = $('#pageNavTableOneHeader').html();
             var pageNavTableFocusColumn = $('#pageNavTableFocusColumn').html();
             var embeddingSnippet = $('#embeddingSnippet').html();
+            var embeddingSnippetVenue = $('#embeddingSnippetVenue').html();
             var eventTableStart = $('#eventTableStart').html();
             var eventTableRow = $('#eventTableRow').html();
             var eventTableEnd = $('#eventTableEnd').html();
@@ -208,9 +227,11 @@ Erfundene Straße 1
                 
                 $('#downloadBtn').attr('disabled', true);                
                 $('#buttonRow').remove();
-                
-                $('#downloadBtnTd').append($('<br/>'));
-                $('#downloadBtnTd').append('Diese Datei <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/admin.php?import=wordpress">hier</a> hochladen. Nach dem Import sind die neuen Seiten <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/edit.php?post_status=draft&post_type=page">hier</a> zu finden.');   
+            
+                var div = $('<div/>').attr({
+                    'align' : 'center',
+                }).appendTo('#downloadBtnTd');
+                $(div).append('<br/>&nbsp;<br/>Diese Datei <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/admin.php?import=wordpress">hier</a> hochladen.<br/>Nach dem Import sind die neuen Seiten <a target="_blank" href="https://kunsteventmuenchen.wordpress.com/wp-admin/edit.php?post_status=draft&post_type=page">hier</a> zu finden.');   
             };
 
         </script>

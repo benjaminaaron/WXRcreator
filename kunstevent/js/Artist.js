@@ -10,14 +10,18 @@ var Artist = function(){
     this.categoryURL = 'kunstler'; 
     this.tdClass = 'tdArtist';
     this.tdTitle = 'neuer Künstler';
+    this.tdTitleClass = 'tdTitleArtist';
     this.inputPretext = 'Name: ';
-    this.inputPrefill = 'Max Mustermann';   
+    this.inputPrefill = 'Max Mustermann';
+    this.embeddingSnippet = embeddingSnippet;
+    this.textareaRows = 10;
+    this.textareaCols = 60;
 
     Template.call(this);
 };
 
 Artist.prototype = {
-    __proto__: Template.prototype    
+    __proto__: Template.prototype
 };
 
 var ArtistSubpage = function(title, defaultOn, changeAllowed){

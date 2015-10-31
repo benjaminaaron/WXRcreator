@@ -9,13 +9,14 @@ var Template = function(tdClass){
         'align' : 'center',
         'class' : this.tdClass
     }).appendTo(tr);
-    this.td.append('<b>' + this.tdTitle + '<b>');
+    this.td.append('<h2 class=\"' + this.tdTitleClass + '\">' + this.tdTitle + '</h2>');
     this.td.append('<br>');
-    
+        
     this.td.append(this.inputPretext);
     this.inputField = $('<input/>').attr({
         'type' : 'text',
-        'value' : this.inputPrefill
+        'value' : this.inputPrefill,
+        'size' : 30
     }).appendTo(this.td);
     this.td.append('<br>');
     
@@ -41,8 +42,63 @@ Template.prototype = {
                 wxrContrib += instantiatePageTemplate(this.parentPageTitle + ' - ' + subpage.title , content, currentMaxID ++, subpage.titleURL, parentPageID);
             };
         };
-
+        
+        this.buildEmbeddingSnippet();
         return wxrContrib;
+    },
+
+    buildEmbeddingSnippet: function(){
+        
+        this.inputField.attr('disabled', true);
+        
+        //SELECT
+        this.td.append($('<br/>'));
+        
+        this.td.append('Landing-Page: ');
+        var selector = $('<select/>').appendTo(this.td);
+                    
+        for(var i = 0; i < this.subpages.length; i ++)
+            this.subpages[i].disableCheckboxAndAppendToSelector(selector);
+            
+        var option = $('<option/>').attr({
+            'value' : 'parentPage',
+        }).appendTo(selector);
+        option.append('empty parent page');    
+                
+        //TEXTAREA
+        this.td.append($('<br/>'));
+            
+        var textarea = $('<textarea/>').attr({
+            'rows' : this.textareaRows,
+            'cols' : this.textareaCols
+        }).appendTo(this.td);
+
+        var chosen = $(selector).val();
+        var embed = getEmbeddingSnippet(this.embeddingSnippet, this.parentPageTitle + ' - ' + chosen, this.parentPageTitle, this.parentPageTitleURL + '/' + formatForURL(chosen), this.categoryURL);
+
+        $(textarea).val(embed);
+        
+        $(textarea).on('click', function(e) {
+            this.select();
+        });
+        
+        var self = this;
+        
+        $(selector).on('change', function (e) {       
+            var chosen = $(this).val();    
+            var landingpageLongTitle = '';
+            var landingpageURL = '';
+            if(chosen == 'parentPage'){
+                landingpageLongTitle = self.parentPageTitle;
+                landingpageURL = self.parentPageTitleURL;
+            }
+            else {
+                landingpageLongTitle = self.parentPageTitle + ' - ' + chosen;
+                landingpageURL = self.parentPageTitleURL + '/' + formatForURL(chosen);
+            }
+            var embed = getEmbeddingSnippet(self.embeddingSnippet, landingpageLongTitle, self.parentPageTitle, landingpageURL, self.categoryURL);
+            $(textarea).val(embed);
+        });
     }
     
 };
@@ -56,14 +112,12 @@ var TemplateSubpage = function(title, defaultOn, changeAllowed){
 
 TemplateSubpage.prototype = {
     
-    appendCheckboxDOM: function(td){
-                
+    appendCheckboxDOM: function(td){    
         this.checkbox = $('<input/>').attr({
             'type' : 'checkbox',
             'checked' : this.defaultOn,
             'disabled' : !this.changeAllowed
         }).appendTo(td);   
-         
         td.append(this.title + ' ');
     },
     
@@ -72,7 +126,6 @@ TemplateSubpage.prototype = {
     },
     
     buildContent: function(parentPage){
-
         var content = pageNavTableStart.replace('$PAGETITLE$', parentPage.parentPageTitle);
                 
         for(var i = 0; i < parentPage.subpages.length; i ++){
@@ -87,12 +140,21 @@ TemplateSubpage.prototype = {
                 content += header;
             };
         };
-        
         content += pageNavTableEnd.replace('$CATEGORY_URL$', parentPage.categoryURL)
             .replace('$CATEGORY$', parentPage.category)
             .replace('$CATEGORY$', parentPage.category);
-
         return content;
+    },
+    
+    disableCheckboxAndAppendToSelector: function(selector){
+        this.checkbox.attr('disabled', true);
+        
+        if(this.isActive()){
+            var option = $('<option/>').attr({
+                'value' : this.title,
+            }).appendTo(selector);
+            option.append(this.title);
+        };
     }
     
 };

@@ -10,14 +10,18 @@ var Venue = function(){
     this.categoryURL = 'ausstellungsort'; 
     this.tdClass = 'tdVenue';
     this.tdTitle = 'neuer Ausstellungsort';
+    this.tdTitleClass = 'tdTitleVenue';
     this.inputPretext = 'Name: ';
     this.inputPrefill = 'Mein neuer Ausstellungsort';   
-
+    this.embeddingSnippet = embeddingSnippetVenue;
+    this.textareaRows = 5;
+    this.textareaCols = 60;
+    
     Template.call(this);
 };
 
 Venue.prototype = {
-    __proto__: Template.prototype    
+    __proto__: Template.prototype
 };
 
 var VenueSubpage = function(title, defaultOn, changeAllowed){
