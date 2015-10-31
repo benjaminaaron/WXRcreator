@@ -104,7 +104,7 @@ Template.prototype = {
             'align' : 'center',
             'style' : 'font-size: 0.8em;'
         }).appendTo(this.td);
-        $(div).append('<br/>Diesen Code <a href=\"' + this.pageWhereToEmbedInEditMode + '\">hier</a> einbauen.');   
+        $(div).append('<br/>Diesen Code <a target="_blank" href=\"' + this.pageWhereToEmbedInEditMode + '\">hier</a> einbauen.');   
     }
     
 };
